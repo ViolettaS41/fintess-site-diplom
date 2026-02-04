@@ -52,14 +52,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="main-content-about"></div>
+                <div class="main-content-about">
                     <h2 class="main-content-about-title">О нас</h2>
                     <div class="main-content-about-info">
                        <p class="main-content-about-description">Мы - современный фитнес-центр, который предлагает широкий спектр услуг для всех, кто хочет достичь своей цели. Наши тренеры - профессионалы в своей области, которые помогут вам достичь своих целей.</p>
                         <img class="main-content-about-image" src="../img/dumbbells.jpg" alt="about"> 
                     </div>
                 </div>
-                <div class="main-content-advantages"></div>
+                <div class="main-content-advantages">
                     <h2 class="main-content-advantages-title">Наши преимущества</h2>
                     <div class="main-content-advantages-info">
                         <div class="main-content-advantages-info-item">
@@ -82,7 +82,11 @@
                 </div>
                 <div class="main-content-trainers">
                     <h2 class="main-content-trainers-title">Наши тренеры</h2>
-                    <div class="main-content-trainers-info">
+                    <div class="main-content-trainers-carousel">
+                        <button class="carousel-btn carousel-btn-prev" type="button" aria-label="Листать тренеров влево">
+                            ‹
+                        </button>
+                        <div class="main-content-trainers-info" id="trainersCarousel" data-carousel>
                         <div class="main-content-trainers-info-item">
                             <img class="main-content-trainers-info-item-image" src="../img/trainer_man.jpg" alt="trainer">
                             <p class="main-content-trainers-info-item-description">Иванов Иван</p>
@@ -103,9 +107,50 @@
                             <p class="main-content-trainers-info-item-description">Петрова Анна</p>
                             <p class="main-content-trainers-info-item-description-text">Тренер по силовым тренировкам, стаж 5 лет</p>
                         </div>
+                        </div>
+                        <button class="carousel-btn carousel-btn-next" type="button" aria-label="Листать тренеров вправо">
+                            ›
+                        </button>
                     </div>
                 </div>
+                
+                <div class="main-content-direction">
+                    <h2 class="main-content-direction-title">Направления тренировок</h2>
+                    <div class="main-content-direction-info">
+                    <div class="main-content-direction-info-item">
+                        <img class="main-content-direction-info-item-image" src="../img/dumbbells.jpg" alt="direction">
+                        <p class="main-content-direction-info-item-description">Силовые тренировки</p>
+                    </div>
+                    <div class="main-content-direction-info-item">
+                        <img class="main-content-direction-info-item-image" src="../img/yoga.jpg" alt="direction">
+                        <p class="main-content-direction-info-item-description">Йога и растяжка</p>
+                    </div>
+                    <div class="main-content-direction-info-item">
+                        <img class="main-content-direction-info-item-image" src="../img/fitness.jpg" alt="direction">
+                        <p class="main-content-direction-info-item-description">Кардио тренировки</p>
+                    </div>
+                    <div class="main-content-direction-info-item">
+                        <img class="main-content-direction-info-item-image" src="../img/group.jpg" alt="direction">
+                        <p class="main-content-direction-info-item-description">Групповые тренировки</p>
+                    </div>
+                    </div>
+
+                    <div class="main-content-signup">
+                        <h3 class="main-content-signup-title">Начните тренироваться уже сегодня!</h3>
+                        <div class="main-content-signup-button">Записаться онлайн</div>
+                    </div>
+
                 </div>
+
+                <!-- <div class="main-content-contacts">
+                    <h2 class="main-content-contacts-title">Контакты</h2>
+                    <div class="main-content-contacts-info">
+                        <p>г. Красноярск ул. Хххххх, д. 1</p>
+                        <p>+7900ХХХХХХХ</p>
+                        <p>powerzone@email.com</p>
+                    </div>
+                </div> -->
+
             </div>
         </div>
     </main>
@@ -122,14 +167,21 @@
                         <li><a href="#">Контакты</a></li>
                     </ul>
                 </div>
+                <div class="main-content-contacts-info">
+                    <p>Адрес: г. Красноярск ул. Хххххх, д. 1</p>
+                    <p>Телефон: +7900ХХХХХХХ</p>
+                    <p>Электронная почта: powerzone@email.com</p>
+                </div>
                 <div class="footer-social-right">
                     <div class="footer-social">
                         <a href="#" class="inst"><img src="../img/inst.svg" alt="inst"></a>
                         <a href="#" class="tg"><img src="../img/tg.svg" alt="tg"></a>
                     </div>
-                    <div class="footer-right">©PowerZone</div>
+                    <div class="footer-right"><p>©PowerZone</p></div>
                 </div>
         </div>
     </footer>
+
+    <script src="../script/carousel.js" defer></script>
 </body>
 </html>
