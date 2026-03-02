@@ -7,6 +7,7 @@
 }
 html{
     background-color: #1F2A44;
+    height: 100%;
 }
 
 /* Header */
@@ -372,10 +373,12 @@ header{
     font-weight: 500;
 }
 
-.main-content-contacts-info{
+.main-content-contacts-info ul{
     display: flex;
+    justify-content: space-between;
+    list-style: none;
     flex-direction: column;
-    gap: 40px;
+    gap: 10px;
 
 }
 
