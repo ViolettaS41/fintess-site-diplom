@@ -1,0 +1,112 @@
+/* Main */
+main{
+    flex: 1 0 auto;
+}
+
+.main-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.main-content-title{
+    font-size: 40px;
+    font-weight: 500;
+    color: #fff;
+    text-align: left;
+}
+.main-content-schedule-filter-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.main-content-schedule-filter-button{
+    background-color: #31426A;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: #FFFF;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.main-content-schedule-table{
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #31426A;
+    border-radius: 10px;
+    padding: 10px 16px;
+    overflow-x: auto;
+}
+.main-content-schedule-table th,
+.main-content-schedule-table td{
+    border: 1px solid #fff;
+    padding: 10px 16px;
+}
+.main-content-schedule-table-button{
+    background-color: #31426A;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: #FFFF;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.main-content-schedule-pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.main-content-schedule-pagination-button{
+    background-color: #31426A;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: #FFFF;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Планшеты */
+@media (max-width: 1024px){
+    .main-content-title{
+        font-size: 32px;
+        text-align: center;
+    }
+}
+
+/* Мобилки */
+@media (max-width: 760px){
+    .main-content{
+        align-items: stretch;
+    }
+    .main-content-schedule-filter-buttons{
+        justify-content: flex-start;
+    }
+    .main-content-schedule-table{
+        padding: 8px;
+    }
+    .main-content-schedule-table th,
+    .main-content-schedule-table td{
+        padding: 8px;
+        font-size: 14px;
+    }
+    .main-content-schedule-table-button{
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    .main-content-schedule-pagination{
+        margin-top: 16px;
+    }
+    .main-content-schedule-pagination-button{
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
