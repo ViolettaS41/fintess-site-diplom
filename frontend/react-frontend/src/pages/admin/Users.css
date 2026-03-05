@@ -1,0 +1,271 @@
+:root {
+    --bg-dark: #1f2a44;
+    --bg-panel: #31426a;
+    --bg-element: #27324b;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a0;
+    --text-blue: #acc0ff;
+    --accent-blue: #acc0ff;
+    --text-accent-blue: #2000f4;
+    --font-main: 'Inter', sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-main);
+    background-color: var(--bg-dark);
+    margin: 0;
+    padding: 0;
+    color: var(--text-white);
+    box-sizing: border-box;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  #section-admin-panel .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+h2{
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .site-header {
+    background-color: var(--bg-panel);
+    padding-top: 49px;
+    height: 245px;
+  }
+  
+  .site-header .header-inner {
+    padding: 0 99px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .site-header .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+  }
+  
+  .site-header .brand-title {
+    font-size: 28px;
+    color: var(--text-blue);
+    font-weight: 700;
+  }
+  
+  .site-header .logout-icon img {
+    width: 119px;
+    height: auto;
+  }
+  
+  .site-header .main-nav {
+    display: flex;
+    gap: 24px;
+  }
+  
+  .site-header .nav-link {
+    font-size: 18px;
+    color: var(--text-gray);
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .site-header .nav-link.active {
+    color: var(--text-white);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1200px) {
+    .site-header .header-inner {
+      padding: 0 40px;
+    }
+    .site-header .brand-title {
+      font-size: 36px;
+    }
+    .site-header .nav-link {
+      font-size: 24px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .site-header {
+      height: auto;
+      padding-bottom: 30px;
+    }
+    .site-header .header-top {
+      flex-direction: row;
+      align-items: center;
+    }
+    .site-header .main-nav {
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .site-header .logout-icon img {
+      width: 60px;
+    }
+  }
+  
+  #section-admin-panel {
+    padding: 32px 0;
+  }
+  
+  .admin-layout {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    gap: 32px;
+  }
+  
+  .col-left {
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+  
+  .col-right {
+    flex: 1;
+    min-width: 0; /* Prevent flex overflow */
+  }
+  
+  .card {
+    background-color: var(--bg-panel);
+    padding: 24px;
+  }
+  
+  /* User List Styles */
+  .list-card {
+    min-height: auto;
+    padding: 24px 24px;
+  }
+  
+  .user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 12px;
+  }
+  
+  .user-name {
+    font-size: 18px;
+    color: var(--text-white);
+  }
+  
+  .status-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  /* Form Styles */
+  .form-card {
+    min-height: auto;
+    padding: 24px 32px;
+  }
+  
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0 32px 0;
+  }
+  
+  .status-label {
+    font-size: 18px;
+    color: var(--text-white);
+  }
+  
+  .status-indicator {
+    width: 28px;
+    height: 26px;
+  }
+  
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1600px) {
+    .admin-layout {
+      padding: 0 24px;
+      gap: 24px;
+    }
+    .col-left {
+      flex: 0 0 45%;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .admin-layout {
+      flex-direction: column;
+    }
+    .col-left,
+    .col-right {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+    .list-card,
+    .form-card {
+      min-height: auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .admin-layout {
+      padding: 0 20px;
+    }
+    .user-name,
+    .form-label,
+    .status-label {
+      font-size: 20px;
+    }
+    .btn,
+    .form-input {
+      height: 60px;
+      font-size: 18px;
+    }
+    .form-card {
+      padding: 20px;
+    }
+  }
+  
