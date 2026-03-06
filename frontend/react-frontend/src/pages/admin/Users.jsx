@@ -1,6 +1,10 @@
 import './Users.css'
+import { useState } from 'react'
+import AddUserForm from '../../components/AddUserForm'
 
 export default function Users(){
+  const [showForm, setShowForm] = useState(false)
+
     return (
         <main>
             <section id="section-admin-panel">
@@ -77,9 +81,19 @@ export default function Users(){
       </div>
 
       <div class="action-buttons">
-        <button class="btn btn-dark">Добавить пользователя</button>
+        <button class="btn btn-dark" onClick={()=>setShowForm(true)}>Добавить пользователя</button>
         <button class="btn btn-dark">Удалить пользователя</button>
       </div>
+
+      {showForm &&(
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Добавить пользователя</h2>
+            <AddUserForm onClose={()=> setShowForm(false)} />
+          </div>
+        </div>
+      )}
+
     </div>
 
     <div class="col-right">

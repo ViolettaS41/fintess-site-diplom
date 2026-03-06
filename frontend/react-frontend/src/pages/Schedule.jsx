@@ -22,6 +22,7 @@ export default function Schedule(){
                                 <th>Тренер</th>
                                 <th>Зал</th>
                                 <th>Свободные места</th>
+                                <th>Стоимость</th>
                                 <th>Действие</th>
                             </tr>
                             <tr>
@@ -30,6 +31,7 @@ export default function Schedule(){
                                 <td>Иван Иванов</td>
                                 <td>Зал 1</td>
                                 <td>10</td>
+                                <td>1200р</td>
                                 <td><button className="main-content-schedule-table-button">Записаться</button></td>
                             </tr>
                         </table>
