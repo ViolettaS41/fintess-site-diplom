@@ -101,17 +101,7 @@ export default function Users(){
         <h2>Данные пользователя</h2>
         <form class="edit-user-form">
           <div class="form-group">
-            <label class="form-label">Фамилия</label>
-            <input type="text" class="form-input" value="" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Имя</label>
-            <input type="text" class="form-input" value="" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Отчество</label>
+            <label class="form-label">ФИО</label>
             <input type="text" class="form-input" value="" />
           </div>
 

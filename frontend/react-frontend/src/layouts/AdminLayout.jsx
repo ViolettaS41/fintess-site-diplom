@@ -1,7 +1,14 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, Navigate} from "react-router-dom";
 import './AdminLayout.css'
 
 export default function AdminLayout(){
+
+    const role = localStorage.getItem('role')
+
+    if (role!== 'admin'){
+        return <Navigate to='/admin/login'/>
+    }
+
     return (
         <div className="admin-layout">
             <header className="admin-header">
