@@ -11,3 +11,26 @@ def create_user(db: Session, user):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+def update_user(db: Session, user_id, user_data):
+
+    user = db.query(Clients).filter(Clients.client_id == user_id).first()
+
+    if not user:
+        return None 
+
+    user.fullname = user_data.name
+    user.email = user_data.email
+    user.phone = user_data.phone
+
+def delete_user(db: Session, user_id):
+    user = db.query(Clients).filter(Clients.client_id == user_id).first()
+
+    if not user:
+        return None
+    
+    db.delete(user)
+    db.commit()
+
+    return True
+

@@ -4,7 +4,17 @@ class ClientCreate(BaseModel):
     fullname: str
     email: str 
     password: str
+    birthday: str
+    phone: str 
+    sex: str 
 
+class ClientUpdate(BaseModel):
+    fullname: str
+    email: str 
+    password: str
+    birthday: str
+    phone: str 
+    sex: str 
 
 # ниче не понятно, уточнить позже
 class ClientResponse(BaseModel):

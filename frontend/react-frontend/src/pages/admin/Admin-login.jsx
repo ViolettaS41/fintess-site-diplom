@@ -22,6 +22,7 @@ export default function Admin_login(){
 
             alert('Вход выполнен')
 
+            localStorage.setItem('token', res.data.acces_token)
             localStorage.setItem('role', res.data.role)
 
             window.location.href = '/admin'
