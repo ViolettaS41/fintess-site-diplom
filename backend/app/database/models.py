@@ -7,7 +7,7 @@ class Clients(Base):
     client_id = Column(Integer, primary_key=True)
     fullname = Column(String(255), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
-    password = Column(String(255), nullable=False)
+    password_hash = Column(String(255), nullable=False)
     birthday = Column(Date)
     phone = Column(String(45))
     sex = Column(String(45))

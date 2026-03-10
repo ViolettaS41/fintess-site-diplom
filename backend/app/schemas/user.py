@@ -3,7 +3,7 @@ from pydantic import BaseModel
 class ClientCreate(BaseModel):
     fullname: str
     email: str 
-    password: str
+    password_hash: str
     birthday: str
     phone: str 
     sex: str 
@@ -11,10 +11,7 @@ class ClientCreate(BaseModel):
 class ClientUpdate(BaseModel):
     fullname: str
     email: str 
-    password: str
-    birthday: str
     phone: str 
-    sex: str 
 
 # ниче не понятно, уточнить позже
 class ClientResponse(BaseModel):

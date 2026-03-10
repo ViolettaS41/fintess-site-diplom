@@ -17,6 +17,11 @@ def get_db():
 def get_users(db: Session = Depends(get_db)):
     return user_crud.get_users(db)
 
+@router.post('/')
+def create_user(user: ClientCreate, db: Session = Depends(get_db)):
+    new_user = user_crud.create_user(db, user)
+    return new_user
+
 
 @router.put('/{user_id}')
 def update_user(

@@ -176,6 +176,7 @@ h2{
     align-items: center;
     padding: 10px 0;
     margin-bottom: 12px;
+    cursor: pointer;
   }
   
   .user-name {
@@ -341,6 +342,10 @@ h2{
     .form-card {
       min-height: auto;
     }
+  }
+  .user-item.active {
+    background: #ececec;
+    font-weight: 600;
   }
   
   @media (max-width: 768px) {

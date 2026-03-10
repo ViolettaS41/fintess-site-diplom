@@ -18,6 +18,12 @@ def get_trainers(db: Session = Depends(get_db)):
     return trainer_crud.get_triners(db)
 
 
+@router.post('/')
+def create_trainers(user: CreateTrainer, db: Session = Depends(get_db)):
+    new_user = trainer_crud.create_trainers(db, user)
+    return new_user
+
+
 @router.put('/{trainer_id}')
 def update_trainer(
     trainer_id: int,
@@ -25,7 +31,7 @@ def update_trainer(
     db: Session = Depends(get_db)
 ):
     
-    update_trainer = trainer_crud.update_user(db, trainer_id, user)
+    update_trainer = trainer_crud.update_trainers(db, trainer_id, user)
 
     if not update_trainer:
         raise HTTPException(status_code=404, detail='User not find')

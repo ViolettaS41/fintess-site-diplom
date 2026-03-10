@@ -13,7 +13,7 @@ export default function Admin_login(){
 
         try {
             const res = await axios.post(
-                'http://localhost:8000/auth/login',
+                'http://127.0.0.1:8000/auth/login',
                 {
                     login,
                     password
@@ -37,7 +37,7 @@ export default function Admin_login(){
                 <div className="main-inner">
                     <div className="main-content">                        
                         <h1 className="main-content-title">Вход в админ-панель</h1>
-                        <form className="main-content-form" onSubmit={handleLogin}>
+                        <form className="main-content-form" onSubmit={handleLogin} method="get">
                             <div className="form-group">
                                 <label htmlFor="email">Логин</label>
                                 <input type="text" id="login" name="login" required placeholder="Login" 
@@ -46,7 +46,7 @@ export default function Admin_login(){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password">Пароль</label>
-                                <input type="password" id="password" name="password" required minLength="8" placeholder="Пароль" 
+                                <input type="password" id="password" name="password" required minLength="5" placeholder="Пароль" 
                                 value={password}
                                 onChange={(e)=>setPassword(e.target.value)}/>
                             </div>

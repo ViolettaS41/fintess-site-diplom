@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from database.models import Trainers
 
@@ -7,7 +9,11 @@ def get_triners(db: Session):
 def create_trainers(db: Session, user):
     new_user = Trainers(**user.dict())
     db.add(new_user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Email already exist")
     db.refresh(new_user)
     return new_user
 
@@ -18,9 +24,13 @@ def update_trainers(db: Session, user_id, user_data):
     if not trainer:
         return None 
 
-    trainer.fullname = user_data.name
-    trainer.email = user_data.email
+    trainer.fullname = user_data.fullname
+    trainer.trainer_email = user_data.trainer_email
     trainer.specialization = user_data.specialization
+
+    db.commit()
+    db.refresh(trainer)
+    return trainer
 
 def delete_ttrainer(db: Session, user_id):
     user = db.query(Trainers).filter(Trainers.trainer_id == user_id).first()
