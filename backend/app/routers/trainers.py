@@ -43,7 +43,7 @@ def delete_trainer(
     trainer_id: int,
     db: Session = Depends(get_db)
 ):
-    result = trainer_crud.delete_user(db, trainer_id)
+    result = trainer_crud.delete_ttrainer(db, trainer_id)
 
     if not result:
         raise HTTPException(status_code=404, detail='User not found')

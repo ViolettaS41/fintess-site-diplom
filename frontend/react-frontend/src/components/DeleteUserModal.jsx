@@ -4,6 +4,8 @@ export default function DeleteUserModal({ user, onClose, reloadUsers }) {
 
   const deleteUser = async () => {
 
+    const token = localStorage.getItem("token")
+
     if (!user) {
         alert("Пользователь не выбран")
         return
@@ -25,6 +27,7 @@ export default function DeleteUserModal({ user, onClose, reloadUsers }) {
       onClose()
 
     } catch(error){
+        console.log("DELETE ERROR:", error)
         const msg = error.response?.data?.detail || 'Не удалось удалить пользователя '
         console.log(user.client_id, typeof user.client_id)
         alert(`Ошибка сохранения: ${msg}`)
