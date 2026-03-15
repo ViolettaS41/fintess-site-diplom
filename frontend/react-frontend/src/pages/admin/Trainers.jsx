@@ -16,10 +16,17 @@ export default function Trainers() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+  const token = localStorage.getItem('token')
+
   const loadTrainers = async ()=>{
     try {
       const response = await axios.get(
-        'http://127.0.0.1:8000/trainers'
+        'http://127.0.0.1:8000/trainers',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       )
       setTrainers(response.data)
     } catch (error){

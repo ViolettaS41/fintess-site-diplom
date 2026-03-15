@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from core.security import get_current_admin
 from database.database import SessionLocal
 from crud import trainers as trainer_crud
 from schemas.trainers import CreateTrainer, Updatetrainer
 
-router = APIRouter(prefix="/trainers")
+router = APIRouter(prefix="/trainers", tags=['Trainers'], dependencies=[Depends(get_current_admin)])
 
 def get_db():
     db = SessionLocal()

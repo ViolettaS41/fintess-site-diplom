@@ -148,6 +148,7 @@
 
 .main-content-trainers-info{
     display: flex;
+    overflow: hidden;
     gap: 20px;
     overflow-x: auto;
     padding: 10px 4px 18px;

@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from database.models import Activity, Booking, ClassSession, Rooms, Trainers
+from core.security import get_current_admin
 from database.database import SessionLocal
 from crud import user as user_crud
 from schemas.user import ClientUpdate, ClientCreate
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=['Users'], dependencies=[Depends(get_current_admin)])
 
 def get_db():
     db = SessionLocal()
@@ -48,3 +50,31 @@ def delete_user(
         raise HTTPException(status_code=404, detail='User not found')
 
     return {'message': 'User deleted'}
+
+@router.get('/{user_id}/next_booking')
+def get_next_booking(user_id: int, db: Session = Depends(get_db)):
+    booking = (
+        db.query(Booking)
+        .join(ClassSession)
+        .join(Activity)
+        .join(Trainers)
+        .join(Rooms)
+        .filter(Booking.client_id == user_id)
+        .order_by(ClassSession.start_time)
+        .first()
+    )
+    if not booking:
+        return {"training": None}
+    
+    session = booking.sessions
+    return {
+        "booking_id": booking.booking_id,
+        "status": booking.status,
+        "training": {
+            "activity": session.activity.name,
+            "trainer": session.trainer.fullname,
+            "room": session.room.name_room,
+            "start_time": session.start_time,
+            "end_time": session.end_time
+        }
+    }

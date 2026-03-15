@@ -1,6 +1,82 @@
 import './Accaunt.css'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 export default function Accaunt(){
+
+    const [user, setUser] = useState(null)
+    const [training, setTraining] = useState(null)
+    const [status, setStatus] = useState(null)
+
+    const [bookingId, setBookingId] = useState(null)
+
+    useEffect(() => {
+
+        const token = localStorage.getItem("token")
+
+        const fetchData = async () => {
+            try {
+
+                const userRes = await axios.get(
+                    "http://localhost:8000/clients/me",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+
+                setUser(userRes.data)
+
+                const trainingRes = await axios.get(
+                    "http://127.0.0.1:8000/clients/me/training",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+
+                if(trainingRes.data.training){
+                    setTraining(trainingRes.data.training)
+                    setStatus(trainingRes.data.status)
+                    setBookingId(trainingRes.data.bookingId)
+                }
+
+            } catch(error){
+                console.error(error)
+            }
+        }
+
+        fetchData()
+
+    }, [])
+
+    if(!user) return <p>Загрузка...</p>
+
+    const confirmTraining = async () => {
+
+        const token = localStorage.getItem("token")
+    
+        try{
+    
+            await axios.post(
+                `http://localhost:8000/booking/confirm/${bookingId}`,
+                {},
+                {
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                }
+            )
+    
+            setStatus("confirmed")
+    
+        }catch(error){
+            console.error(error)
+        }
+    }
+
     return (
         <main>
         <div className="container">
@@ -16,16 +92,31 @@ export default function Accaunt(){
                             <p>Запись подтверждена?</p>
                         </div>
                         <div className="right">
-                            <p>Иван Иванов</p>
-                            <p>ivanov@example.com</p>
-                            <p>+7 (123) 456-78-90</p>
-                            <p>10:00 20.03.2026 "Восстановительная йога" в зале 1 (Иван Иванов)</p>
-                            <p><button className="main-content-data-table-button">Подтвердить</button></p>
+                            <p>{user.fullname}</p>
+                            <p>{user.email}</p>
+                            <p>{user.phone}</p>
+                            <p>
+                                {training 
+                                ? `${training.start_time} "${training.activity}" ${training.room} (${training.trainer})`
+                                : "Нет записи"}
+                            </p>
+                            <p> 
+                                {training
+                                ? status === 'confirmed'
+                                    ? "Подтверждена"
+                                    : <button className="main-content-data-table-button"
+                                    onClick={confirmTraining}>Подтвердить</button>
+                                : '-'}
+                                </p>
                         </div>
                     </div>
                     <div className="main-content-buttons">
-                        <button className="main-content-button-schedule">Расписание тренировок</button>
-                        <button className="main-content-button-logout">Выйти</button>
+                        <button className="main-content-button-schedule" onClick={()=> window.location.href='/schedule'}>Расписание тренировок</button>
+                        <button className="main-content-button-logout" 
+                        onClick={()=> 
+                            {localStorage.removeItem('token')
+                            window.location.href='/'
+                        }}>Выйти</button>
                     </div>
                 </div>
             </div>

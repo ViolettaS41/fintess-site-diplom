@@ -11,17 +11,39 @@ export default function Users(){
   const [selectedUser, setSelectUser] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false) 
 
+  const [nextBooking, setNextBooking] = useState(null)
+
   const [editName, setEditName] = useState('')
   const [editPhone, setEditPhone] = useState('')
   const [editEmail, setEditEmail] = useState('')
 
-  const selectUser = (user) =>{
+  const selectUser = async (user) =>{
     setSelectUser(user)
 
     setEditName(user.fullname)
     setEditEmail(user.email)
     setEditPhone(user.phone)
+
+    try {
+
+      const response = await axios.get(
+        `http://127.0.0.1:8000/users/${user.client_id}/next_booking`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+  
+      setNextBooking(response.data)
+  
+    } catch (error) {
+      console.error(error)
+      setNextBooking(null)
+    }
   }
+
+  const token = localStorage.getItem('token')
 
   const updateUser = async (e) =>{
     e.preventDefault()
@@ -29,13 +51,18 @@ export default function Users(){
     if (!selectedUser) return
 
     try {
+
       await axios.put(
         `http://127.0.0.1:8000/users/${selectedUser.client_id}`,
         {
           fullname: editName,
           phone: editPhone,
           email: editEmail
-        }
+        },
+        {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }}
       )
 
       await loadUsers()
@@ -46,12 +73,42 @@ export default function Users(){
     }
   }
 
+  const confirmBooking = async () => {
+
+    if (!nextBooking) return
+  
+    try {
+  
+      await axios.put(
+        `http://127.0.0.1:8000/admin/booking/${nextBooking.booking_id}/confirm`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+  
+      setNextBooking(prev => ({
+        ...prev,
+        status: "confirmed"
+      }))
+  
+    } catch (error) {
+      console.error(error)
+      alert("Ошибка подтверждения записи")
+    }
+  }
 
   const loadUsers = async () =>{
-    
+   
     try {
+      
       const response = await axios.get(
-        'http://127.0.0.1:8000/users'
+        'http://127.0.0.1:8000/users', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }}
       )
 
       setUsers(response.data)
@@ -77,11 +134,14 @@ export default function Users(){
             key={user.client_id} 
             onClick={()=> selectUser(user)}>
             <span className="user-name">{user.fullname}</span>
-            <img
-              src=""
-              alt="Active"
-              className="status-icon"
-            />
+            <span
+              className={`status-dot ${
+                selectedUser?.client_id === user.client_id &&
+                nextBooking?.status === 'confirmed'
+                  ? 'green'
+                  : 'gray'
+              }`}
+            ></span>
           </li>
           ))}
           
@@ -133,20 +193,31 @@ export default function Users(){
 
           <div className="form-group">
             <label className="form-label">Следующая запись</label>
-            <input type="text" className="form-input" value="" />
+            <input type="text" className="form-input" readOnly value={
+              nextBooking?.training 
+              ? `${new Date(nextBooking.training.start_time).toLocaleString()} - ${nextBooking.training.activity}`
+              : 'Нет записей'
+            } />
           </div>
 
           <div className="status-row">
-            <span className="status-label">Подтверждение записи:</span>
-            <img
-              src="${ASSET_PATH}/62_143.svg"
-              alt="Not Confirmed"
-              className="status-indicator"
-            />
-          </div>
+              <span className="status-label">Статус записи:</span>
+
+              <span
+                className={
+                  nextBooking?.status === "confirmed"
+                    ? "status-confirmed"
+                    : "status-not-confirmed"
+                }
+              >
+                {nextBooking?.status === "confirmed"
+                  ? "Подтверждено"
+                  : "Не подтверждено"}
+              </span>
+            </div>
 
           <div className="form-actions">
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary" onClick={confirmBooking} disabled={!nextBooking || nextBooking.status === 'confirmed'}>
               Подтвердить вручную
             </button>
             <button type="submit" className="btn btn-secondary">

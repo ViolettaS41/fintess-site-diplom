@@ -12,6 +12,7 @@ export default function Admin_login(){
         e.preventDefault()
 
         try {
+            
             const res = await axios.post(
                 'http://127.0.0.1:8000/auth/login',
                 {
@@ -22,7 +23,7 @@ export default function Admin_login(){
 
             alert('Вход выполнен')
 
-            localStorage.setItem('token', res.data.acces_token)
+            localStorage.setItem('token', res.data.access_token)
             localStorage.setItem('role', res.data.role)
 
             window.location.href = '/admin'

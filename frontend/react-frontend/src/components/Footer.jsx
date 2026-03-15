@@ -11,10 +11,10 @@ function Footer() {
                     <div className="footer-menu">
                         <ul>
                             <li><Link to="/">Главная</Link></li>
-                            <li><a href="#">О нас</a></li>
+                            <li><a href="#about">О нас</a></li>
                             <li><Link to="/schedule">Расписание</Link></li>
-                            <li><a href="#">Тренеры</a></li>
-                            <li><a href="#">Контакты</a></li>
+                            <li><a href="#trainers">Тренеры</a></li>
+                            <li><a href="#contact">Контакты</a></li>
                         </ul>
                     </div>
                     <div className="main-content-contacts-info">
