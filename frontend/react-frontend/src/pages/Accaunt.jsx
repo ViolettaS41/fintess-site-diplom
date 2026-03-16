@@ -40,7 +40,7 @@ export default function Accaunt(){
                 if(trainingRes.data.training){
                     setTraining(trainingRes.data.training)
                     setStatus(trainingRes.data.status)
-                    setBookingId(trainingRes.data.bookingId)
+                    setBookingId(trainingRes.data.booking_id)
                 }
 
             } catch(error){
@@ -60,9 +60,11 @@ export default function Accaunt(){
     
         try{
     
-            await axios.post(
-                `http://localhost:8000/booking/confirm/${bookingId}`,
-                {},
+            await axios.put(
+                `http://127.0.0.1:8000/admin/booking/${bookingId}/confirm`,
+                {
+                    status: 'confirmed'
+                },
                 {
                     headers:{
                         Authorization:`Bearer ${token}`
@@ -73,7 +75,9 @@ export default function Accaunt(){
             setStatus("confirmed")
     
         }catch(error){
-            console.error(error)
+            console.error(error.response.data)
+            console.error('booking id', bookingId)
+            alert('Ошибка подтверждения записи')
         }
     }
 
@@ -97,15 +101,18 @@ export default function Accaunt(){
                             <p>{user.phone}</p>
                             <p>
                                 {training 
-                                ? `${training.start_time} "${training.activity}" ${training.room} (${training.trainer})`
+                                ? `${new Date(training.start_time).toLocaleString()} "${training.activity}" ${training.room} (${training.trainer})`
                                 : "Нет записи"}
                             </p>
                             <p> 
                                 {training
                                 ? status === 'confirmed'
                                     ? "Подтверждена"
-                                    : <button className="main-content-data-table-button"
-                                    onClick={confirmTraining}>Подтвердить</button>
+                                    : <button 
+                                    className="main-content-data-table-button"
+                                    onClick={confirmTraining}
+                                    
+                                    >Подтвердить</button>
                                 : '-'}
                                 </p>
                         </div>
