@@ -10,3 +10,8 @@ class ClientCreate(BaseModel):
 class ClientLogin(BaseModel):
     email: str
     password_hash: str 
+
+class ClientUpdate(BaseModel):
+    fullname: str
+    email: str
+    phone: str

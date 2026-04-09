@@ -6,6 +6,14 @@ export default function Schedule(){
 
     const [sessions, setSessions] = useState([])
 
+    const [filter, setFilter] = useState("Все")
+
+
+    const filteredSessions = sessions.filter(session => {
+        if (filter === "Все") return true
+        return session.activity === filter
+    })
+
     const fetchSchedule = async () => {
         try{
 
@@ -55,11 +63,11 @@ export default function Schedule(){
                 <div className="main-content">
                     <h1 className="main-content-title">Расписание тренировок</h1>
                     <div className="main-content-schedule-filter-buttons">
-                        <button className="main-content-schedule-filter-button">Все</button>
-                        <button className="main-content-schedule-filter-button">Силовые</button>
-                        <button className="main-content-schedule-filter-button">Кардио</button>
-                        <button className="main-content-schedule-filter-button">Йога</button>
-                        <button className="main-content-schedule-filter-button">Групповые</button>
+                        <button className="main-content-schedule-filter-button" onClick={() => setFilter("Все")}>Все</button>
+                        <button className="main-content-schedule-filter-button" onClick={() => setFilter("Силовые")}>Силовые</button>
+                        <button className="main-content-schedule-filter-button" onClick={() => setFilter("Кардио")}>Кардио</button>
+                        <button className="main-content-schedule-filter-button" onClick={() => setFilter("Йога")}>Йога</button>
+                        <button className="main-content-schedule-filter-button" onClick={() => setFilter("Пилатес")}>Пилатес</button>
                     </div>
                     <div className="main-content-schedule-table">
                         <table>
@@ -75,7 +83,7 @@ export default function Schedule(){
                                 </tr>
                             </thead>
                            <tbody>
-                            {sessions.map((session)=>
+                            {filteredSessions.map((session)=>
                                 (
                                     <tr key={session.session_id}>
                                     <td>{session.time}</td>

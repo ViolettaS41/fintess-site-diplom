@@ -40,7 +40,7 @@ export default function EditTrainerForm({ trainer, onClose, reloadTrainers }) {
       const msg =
         error.response?.data?.detail ||
         "Ошибка обновления"
-
+      console.log(msg, error)
       alert(msg)
     }
   }

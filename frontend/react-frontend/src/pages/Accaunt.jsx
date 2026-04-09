@@ -10,6 +10,11 @@ export default function Accaunt(){
 
     const [bookingId, setBookingId] = useState(null)
 
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [editName, setEditName] = useState('')
+    const [editPhone, setEditPhone] = useState('')
+    const [editEmail, setEditEmail] = useState('')
+
     useEffect(() => {
 
         const token = localStorage.getItem("token")
@@ -61,7 +66,7 @@ export default function Accaunt(){
         try{
     
             await axios.put(
-                `http://127.0.0.1:8000/admin/booking/${bookingId}/confirm`,
+                `http://127.0.0.1:8000/clients/booking/confirm/${bookingId}`,
                 {
                     status: 'confirmed'
                 },
@@ -81,6 +86,62 @@ export default function Accaunt(){
         }
     }
 
+    const cancelTraining = async () => {
+        const token = localStorage.getItem("token")
+        try{
+            await axios.put(
+                `http://127.0.0.1:8000/clients/booking/cancel/${bookingId}`,
+                {
+                    status: 'cancelled'
+                },
+                {
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                }
+            )
+            setTraining(null)
+            setStatus(null)
+            setBookingId(null)
+
+            alert('Запись отменена')
+        }
+        catch(error){
+            console.error(error.response.data)
+            console.error('booking id', bookingId)
+            alert('Ошибка отмены записи')
+        }
+    }
+
+    const updateProfile = async () => {
+
+        const token = localStorage.getItem("token")
+    
+        try {
+    
+            await axios.put(
+                "http://127.0.0.1:8000/clients/me",
+                {
+                    fullname: editName,
+                    email: editEmail,
+                    phone: editPhone
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+            
+            // await fetchData()
+            alert("Данные обновлены")
+            setShowEditModal(false)
+    
+        } catch (error) {
+            console.error(error)
+            alert("Ошибка обновления данных")
+        }
+    }
     return (
         <main>
         <div className="container">
@@ -104,30 +165,85 @@ export default function Accaunt(){
                                 ? `${new Date(training.start_time).toLocaleString()} "${training.activity}" ${training.room} (${training.trainer})`
                                 : "Нет записи"}
                             </p>
-                            <p> 
-                                {training
-                                ? status === 'confirmed'
-                                    ? "Подтверждена"
-                                    : <button 
-                                    className="main-content-data-table-button"
-                                    onClick={confirmTraining}
-                                    
-                                    >Подтвердить</button>
-                                : '-'}
-                                </p>
+                            <p>
+                            {training ? (
+                                status === 'confirmed' ? (
+                                    <>
+                                        Подтверждена
+                                        <br />
+                                        <button
+                                            className="main-content-data-table-button cancel"
+                                            onClick={cancelTraining}
+                                        >
+                                            Отменить запись
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button
+                                            className="main-content-data-table-button"
+                                            onClick={confirmTraining}
+                                        >
+                                            Подтвердить
+                                        </button>
+
+                                        <button
+                                            className="main-content-data-table-button cancel"
+                                            onClick={cancelTraining}
+                                        >
+                                            Отменить
+                                        </button>
+                                    </>
+                                )
+                            ) : (
+                                '-'
+                            )}
+                        </p>
                         </div>
                     </div>
                     <div className="main-content-buttons">
                         <button className="main-content-button-schedule" onClick={()=> window.location.href='/schedule'}>Расписание тренировок</button>
+                        <button className="main-content-button-schedule" onClick={()=> setShowEditModal(true)}>Редактировать данные</button>
                         <button className="main-content-button-logout" 
                         onClick={()=> 
                             {localStorage.removeItem('token')
                             window.location.href='/'
                         }}>Выйти</button>
+                        
                     </div>
                 </div>
             </div>
         </div>
+        {showEditModal && (
+            <div className="modal">
+                <div className="modal-content">
+                    <h2>Редактировать данные</h2>
+
+                    <input type="text"
+                    value= {editName} 
+                    onChange={(e)=> setEditName(e.target.value)}
+                    placeholder='ФИО' 
+                    required/>
+
+                    <input type="email"
+                    value= {editEmail} 
+                    onChange={(e)=> setEditEmail(e.target.value)}
+                    placeholder='Email' 
+                    required/>
+
+                    <input type="text"
+                    value= {editPhone} 
+                    onChange={(e)=> setEditPhone(e.target.value)}
+                    placeholder='Телефон' 
+                    required/>
+
+                    <div className="modal-buttons">
+                        <button onClick={updateProfile}>Сохранить</button>
+                        <button onClick={() => setShowEditModal(false)}>Отмена</button>
+                    </div>
+                </div>
+            </div>
+        )}
      </main>
     )
 }

@@ -2,7 +2,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.orm import Session
 from database.models import Activity, Booking, ClassSession, Clients, Rooms, Trainers
-from schemas.clients import ClientCreate, ClientLogin
+from schemas.clients import ClientCreate, ClientLogin, ClientUpdate
 from routers.users import get_db
 from core.security import get_current_user, hash_password, verify_password, create_access_token
 from crud import trainers as trainer_crud
@@ -93,6 +93,28 @@ def get_my_training(current_user: Clients = Depends(get_current_user), db: Sessi
     }
 
 
+@router.put('/me')
+def update_client(data: ClientUpdate, current_user: Clients = Depends(get_current_user), db: Session = Depends(get_db)):
+    client = db.query(Clients).filter(Clients.client_id == current_user.client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail='Client not found')
+
+    client.fullname = data.fullname
+    client.email = data.email
+    client.phone = data.phone
+
+    db.commit()
+    db.refresh(client)
+
+    return {
+        'message': 'Client updated',
+        'client': {
+            'fullname': client.fullname,
+            'email': client.email,
+            'phone': client.phone
+        }
+    }
+
 # <-----------------Расписание тренировок------------>
 @router.get("/schedule")
 def get_schedule(db: Session = Depends(get_db)):
@@ -117,7 +139,7 @@ def get_schedule(db: Session = Depends(get_db)):
 
         result.append({
             "session_id": s.session_id,
-            "time": s.start_time.strftime("%H:%M"),
+             "time": s.start_time.strftime("%d.%m.%Y %H:%M"),
             "activity": s.activity.name,
             "trainer": s.trainer.fullname,
             "room": s.room.name_room,
@@ -127,7 +149,7 @@ def get_schedule(db: Session = Depends(get_db)):
 
     return result
 
-@router.post('/booking/config/{booking_id}')
+@router.put('/booking/confirm/{booking_id}')
 def confirm_booking(
     booking_id: int = Path(...),
     current_user: Clients = Depends(get_current_user),
@@ -152,7 +174,7 @@ def confirm_booking(
     }
 
 
-@router.post("/booking/cancel/{booking_id}")
+@router.put("/booking/cancel/{booking_id}")
 def cancel_booking(
     booking_id: int,
     current_user: Clients = Depends(get_current_user),
