@@ -38,7 +38,21 @@ def delete_ttrainer(db: Session, user_id):
     if not user:
         return None
     
+    # запрещаем удалять тренера, у которого есть тренировки
+    if user.sessions and len(user.sessions) > 0:
+        raise HTTPException(
+            status_code=409,
+            detail="Нельзя удалить тренера: у него есть назначенные тренировки"
+        )
+
     db.delete(user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Нельзя удалить тренера: у него есть связанные записи"
+        )
 
     return True

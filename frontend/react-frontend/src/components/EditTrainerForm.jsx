@@ -4,7 +4,7 @@ import axios from "axios"
 export default function EditTrainerForm({ trainer, onClose, reloadTrainers }) {
 
   const [fullname, setName] = useState(trainer.fullname)
-  const [email, setEmail] = useState(trainer.trainer_email)
+  const [trainer_email, setEmail] = useState(trainer.trainer_email)
   const [specialization, setSpecialization] = useState(trainer.specialization)
 
   const token = localStorage.getItem("token")
@@ -19,7 +19,7 @@ export default function EditTrainerForm({ trainer, onClose, reloadTrainers }) {
         `http://127.0.0.1:8000/trainers/${trainer.trainer_id}`,
         {
           fullname,
-          email,
+          trainer_email,
           specialization
         },
         {
@@ -58,7 +58,7 @@ export default function EditTrainerForm({ trainer, onClose, reloadTrainers }) {
       <label htmlFor="email">Email</label>
       <input
         name="email"
-        value={email}
+        value={trainer_email}
         onChange={(e)=>setEmail(e.target.value)}
       />
 

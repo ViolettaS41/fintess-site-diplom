@@ -1,11 +1,11 @@
-import datetime
+from datetime import datetime, timezone
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from database.models import Booking, ClassSession
 
 def get_booking(db: Session):
-    return db.query(Booking).all()
+    return db.query(Booking).join(ClassSession).filter(ClassSession.start_time > datetime.now(timezone.utc)).all()
 
 def create_booking(db:Session, data):
 
@@ -16,7 +16,7 @@ def create_booking(db:Session, data):
         Booking.status == "confirmed"
     ).count()
 
-    if booked >= session.max_capasity:
+    if booked >= session.max_capacity:
         raise HTTPException(
             status_code=400,
             detail="Нет свободных мест"
@@ -25,8 +25,8 @@ def create_booking(db:Session, data):
     new_booking = Booking(
         client_id = data.client_id,
         session_id = data.session_id,
-        booking_date = datetime.utcnow(),
-        status = 'confirmed')
+        booking_date = datetime.now(timezone.utc),
+        status = data.status or 'confirmed')
 
     db.add(new_booking)
     try:

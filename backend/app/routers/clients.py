@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.orm import Session
 from database.models import Activity, Booking, ClassSession, Clients, Rooms, Trainers
@@ -124,6 +124,7 @@ def get_schedule(db: Session = Depends(get_db)):
         .join(Activity)
         .join(Trainers)
         .join(Rooms)
+        .filter(ClassSession.start_time > datetime.now(timezone.utc))
         .all()
     )
 

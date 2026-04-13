@@ -85,6 +85,27 @@ def get_client_booking(client_id: int, db: Session= Depends(get_db)):
     return booking
 
 
+@router.post("/admin/booking")
+def create_booking(
+    data: BookingCreate,
+    db: Session = Depends(get_db)
+):
+    booking = Booking(
+        client_id=data.client_id,
+        session_id=data.session_id,
+        status="cancelled"
+    )
+
+    db.add(booking)
+    db.commit()
+    db.refresh(booking)
+
+    return {"message": "Booking created",
+    "client_id": booking.client_id,
+    "session_id": booking.session_id,
+    "booking_date": booking.booking_date,
+    'status': booking.status}
+
 # api for schedule
 @router.get('/schedule')
 def get_schedule(db: Session = Depends(get_db)):

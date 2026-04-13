@@ -17,6 +17,11 @@ export default function Users(){
   const [editPhone, setEditPhone] = useState('')
   const [editEmail, setEditEmail] = useState('')
 
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [sessions, setSessions] = useState([])
+  const [selectedSession, setSelectedSession] = useState(null)
+
+  
   const selectUser = async (user) =>{
     setSelectUser(user)
 
@@ -100,6 +105,73 @@ export default function Users(){
     }
   }
 
+  const cancelBooking = async () => {
+    if (!nextBooking) return
+  
+    try {
+      await axios.put(
+        `http://127.0.0.1:8000/admin/booking/${nextBooking.booking_id}/cancel`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+  
+      setNextBooking(prev => ({
+        ...prev,
+        status: "cancelled"
+      }))
+  
+    } catch (error) {
+      console.error(error)
+      alert("Ошибка отмены записи")
+    }
+  }
+
+  const loadSessions = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/admin/sessions", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setSessions(res.data)
+    }
+    catch(error){
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    loadSessions()
+  }, [showBookingModal])
+
+  const createBooking = async () => {
+    if (!selectedSession || !selectedUser) return
+    try {
+      await axios.post("http://127.0.0.1:8000/admin/booking", {
+        client_id: selectedUser.client_id,
+        session_id: selectedSession
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      alert("Запись на тренировку успешно создана")
+      setShowBookingModal(false)
+      setSelectedSession(null)
+
+      await selectUser(selectedUser)
+    }
+    catch(error){
+      console.log(typeof selectedSession, selectedSession)
+      console.error(error)
+      alert("Ошибка создания записи на тренировку")
+    }
+  }
+
   const loadUsers = async () =>{
    
     try {
@@ -150,6 +222,7 @@ export default function Users(){
 
       <div className="action-buttons">
         <button className="btn btn-dark" onClick={()=>setShowForm(true)}>Добавить пользователя</button>
+        <button type="button" className="btn btn-dark" onClick={()=>setShowBookingModal(true)}>Записать на тренировку</button>
         <button className="btn btn-dark" disabled={!selectedUser} onClick={()=> setShowDeleteModal(true)}>Удалить пользователя</button>
       </div>
 
@@ -171,6 +244,36 @@ export default function Users(){
         reloadUsers={loadUsers}
       />
     )}
+
+{showBookingModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <h2>Запись на тренировку</h2>
+
+      <select
+        value={selectedSession || ""}
+        onChange={(e) => setSelectedSession(Number(e.target.value))}
+      >
+        <option value="">Выберите тренировку</option>
+
+        {sessions.map(session => (
+          <option key={session.session_id} value={session.session_id}>
+            {new Date(session.start_time).toLocaleString()} — {session.activity_id} - {session.trainer_id} - {session.room_id}
+          </option>
+        ))}
+      </select>
+
+      <div className="modal-buttons">
+        <button onClick={createBooking}>
+          Записать
+        </button>
+        <button onClick={() => setShowBookingModal(false)}>
+          Отмена
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
     <div className="col-right">
       <div className="card form-card">
@@ -218,7 +321,10 @@ export default function Users(){
 
           <div className="form-actions">
             <button type="button" className="btn btn-primary" onClick={confirmBooking} disabled={!nextBooking || nextBooking.status === 'confirmed'}>
-              Подтвердить вручную
+              Подтвердить запись
+            </button>
+            <button type="button" className="btn btn-primary" onClick={cancelBooking} disabled={!nextBooking || nextBooking.status === 'cancelled'}>
+              Отменить запись
             </button>
             <button type="submit" className="btn btn-secondary">
               Сохранить изменения

@@ -31,6 +31,8 @@ class Trainers(Base):
     specialization = Column(String(100))
     trainer_email = Column(String(100))
 
+    # Не каскадируем удаление тренировок при удалении тренера:
+    # удаление должно быть запрещено, если есть связанные ClassSession.
     sessions = relationship('ClassSession', back_populates='trainer')
 
 class Activity(Base):
