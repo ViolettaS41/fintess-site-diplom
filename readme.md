@@ -45,3 +45,13 @@
 9. Установить зависимости ***pip install -r requirements.txt***
 
 10. Прописать команду ***uvicorn main:app --reload*** для запуска бэкенд-части 
+
+
+
+https://github.com/user-attachments/assets/babc4306-3348-42c9-a2d8-d606f8389770
+
+
+
+
+
+
