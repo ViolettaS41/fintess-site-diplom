@@ -5,12 +5,93 @@
     font-family: 'Montserrat', sans-serif;
     color: #fff;
 }
+
 html{
     background-color: #1F2A44;
     height: 100%;
+    -webkit-text-size-adjust: 100%;
 }
+
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Минимальная высота - 100% высоты окна (viewport height) */
-  }
+    margin: 0;
+    min-width: 320px;
+}
+
+main{
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+@media (max-width: 760px){
+    .container{
+        padding: 0 12px;
+    }
+}
+
+/* Admin action icon buttons (edit/delete) */
+.action-btn{
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(31, 42, 68, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.action-btn:hover{
+    background: rgba(31, 42, 68, 0.65);
+}
+.action-btn img{
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 760px){
+    .action-btn{
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+    }
+    .action-btn img{
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Admin pages: keep content within viewport */
+.admin-content{
+    min-width: 0;
+}
+
+.table-card,
+.main-content-schedule-table{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-card table,
+.main-content-schedule-table table{
+    width: 100%;
+    border-collapse: collapse;
+}

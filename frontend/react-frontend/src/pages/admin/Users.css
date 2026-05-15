@@ -31,9 +31,12 @@
   }
   
   #section-admin-panel .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    /* Admin area should use available width (avoid large auto side margins). */
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
     width: 100%;
+    padding: 0 20px;
   }
   
   h1,
@@ -140,23 +143,23 @@ h2{
     padding: 32px 0;
   }
   
-  .admin-layout {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 24px;
+  .admin-users-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 32px;
+    width: 100%;
+    max-width: 100%;
   }
   
-  .col-left {
-    flex: 0 0 50%;
+  .admin-users-layout .col-left {
     display: flex;
     flex-direction: column;
     gap: 60px;
+    min-width: 0;
   }
   
-  .col-right {
-    flex: 1;
-    min-width: 0; /* Prevent flex overflow */
+  .admin-users-layout .col-right {
+    min-width: 0; /* allow shrinking; prevent overflow */
   }
   
   .card {
@@ -346,22 +349,20 @@ h2{
   
   /* Responsive */
   @media (max-width: 1600px) {
-    .admin-layout {
-      padding: 0 24px;
+    .admin-users-layout {
       gap: 24px;
     }
-    .col-left {
+    .admin-users-layout .col-left {
       flex: 0 0 45%;
     }
   }
   
   @media (max-width: 1200px) {
-    .admin-layout {
-      flex-direction: column;
+    .admin-users-layout {
+      grid-template-columns: minmax(0, 1fr);
     }
-    .col-left,
-    .col-right {
-      flex: 1 1 auto;
+    .admin-users-layout .col-left,
+    .admin-users-layout .col-right {
       width: 100%;
     }
     .list-card,
@@ -375,21 +376,38 @@ h2{
   }
   
   @media (max-width: 768px) {
-    .admin-layout {
-      padding: 0 20px;
+    .form-grid{
+      grid-template-columns: 1fr;
     }
-    .user-name,
+    .modal-content{
+      width: min(420px, 92vw);
+      padding: 20px;
+    }
+    .user-name{
+      font-size: 16px;
+    }
     .form-label,
-    .status-label {
-      font-size: 20px;
+    .status-label{
+      font-size: 16px;
     }
     .btn,
-    .form-input {
-      height: 60px;
-      font-size: 18px;
+    .form-input{
+      font-size: 16px;
     }
     .form-card {
       padding: 20px;
+    }
+  }
+
+  @media (max-width: 420px){
+    .card{
+      padding: 16px;
+    }
+    .list-card{
+      padding: 16px;
+    }
+    .form-card{
+      padding: 16px;
     }
   }
   

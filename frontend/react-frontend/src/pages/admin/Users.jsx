@@ -196,7 +196,7 @@ export default function Users(){
     return (
         <main>
             <section id="section-admin-panel">
-  <div className="container admin-layout">
+  <div className="container admin-users-layout">
     <div className="col-left">
       <div className="card list-card">
         <h2>Список пользователей</h2>

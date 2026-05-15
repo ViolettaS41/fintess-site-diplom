@@ -47,7 +47,9 @@ export default function AdminLayout(){
             </header>
             
             <main className="admin-content">
-                <Outlet />
+                <div className="container admin-container">
+                    <Outlet />
+                </div>
             </main>
         </div>
     )

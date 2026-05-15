@@ -1,7 +1,7 @@
 import EditModal from '../../components/EditModal'
 import editIcon from '../../assets/img/edit.svg'
 import deleteIcon from '../../assets/img/delete.svg'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 
 export default function Dashboards(){
@@ -71,6 +71,23 @@ export default function Dashboards(){
         console.error(error)
     }
   }
+
+  const sortedSessions = useMemo(() => {
+    const toTime = (value) => {
+      if (!value) return Number.NEGATIVE_INFINITY
+      const t = new Date(value).getTime()
+      if (Number.isFinite(t)) return t
+      // Fallback for non-ISO strings: keep stable-ish order via string compare
+      return Number.NEGATIVE_INFINITY
+    }
+
+    return [...sessions].sort((a, b) => {
+      const bt = toTime(b.start_time)
+      const at = toTime(a.start_time)
+      if (bt !== at) return bt - at
+      return (String(b.start_time ?? '')).localeCompare(String(a.start_time ?? ''))
+    })
+  }, [sessions])
     
     return (
         <main>
@@ -88,7 +105,7 @@ export default function Dashboards(){
                         </tr>
                     </thead>
                     <tbody>
-                        {sessions.map(session => (
+                        {sortedSessions.map(session => (
                             <tr key={session.session_id}>
                                 <td>{session.start_time}</td>
                                 <td>{session.activity}</td>

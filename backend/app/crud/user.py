@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from database.models import Clients
+from database.models import Booking, Clients
 from core.security import hash_password
 
 def get_users(db: Session):
@@ -46,9 +46,19 @@ def delete_user(db: Session, user_id):
 
     if not user:
         return None
-    
+
+    # Отменённые записи тоже остаются в booking и блокируют FK при удалении клиента.
+    db.query(Booking).filter(Booking.client_id == user_id).delete()
+
     db.delete(user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Нельзя удалить пользователя: есть связанные записи",
+        )
 
     return True
 
